@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ArticuloController;
+use App\Http\Controllers\ProfileController;
+use App\Models\Articulo;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +18,32 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('portal', [
+        'articulos' => Articulo::all(),
+    ]);
 });
+
+Route::get('/prueba/{nombre?}/{apellidos?}', function ($nombre = null, $apellidos = null) {
+    if ($nombre == null) {
+        // return response()->redirectTo('/');
+        return Response::redirectTo('/');
+    }
+    return view('prueba', [
+        'nombre' => $nombre,
+        'apellidos' => $apellidos,
+    ]);
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::resource('articulo', ArticuloController::class);
+
+require __DIR__.'/auth.php';
