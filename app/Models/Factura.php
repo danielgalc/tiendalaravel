@@ -5,13 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Articulo extends Model
+class Factura extends Model
 {
     use HasFactory;
 
-    public function facturas()
+    public function user()
     {
-        return $this->belongsToMany(Factura::class)
+        return $this->belongsTo(User::class);
+    }
+
+    public function articulos()
+    {
+        return $this->belongsToMany(Articulo::class)
             ->withPivot('cantidad');
     }
 }

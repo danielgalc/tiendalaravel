@@ -2,10 +2,10 @@
 
 namespace App\Generico;
 
-use App\Tablas\Articulo;
+use App\Models\Articulo;
 use ValueError;
 
-class Carrito extends Modelo
+class Carrito
 {
     private array $lineas;
 
@@ -16,7 +16,7 @@ class Carrito extends Modelo
 
     public function insertar($id)
     {
-        if (!($articulo = Articulo::obtener($id))) {
+        if (!($articulo = Articulo::find($id))) {
             throw new ValueError('El artículo no existe.');
         }
 
